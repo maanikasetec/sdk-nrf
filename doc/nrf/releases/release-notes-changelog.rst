@@ -47,12 +47,26 @@ Bluetooth mesh
 * Added :c:struct:`bt_mesh_sensor_srv` context to relevant callbacks and APIs to help resolve the associated sensor model instance.
   For details, see `Bluetooth mesh samples`_ and `Bluetooth libraries and services`_.
 
+See `Bluetooth mesh samples`_ for lists of changes for the Bluetooth mesh samples.
+
 Matter
 ------
 
 * The CHIP Tool controller is now the recommended controller for Matter.
   The documentation about :ref:`ug_matter_configuring_controller` has been updated accordingly.
   For more information about the CHIP Tool controller, read the :doc:`matter:chip_tool_guide` page in the Matter documentation.
+
+See `Matter samples`_ for lists of changes for the Matter samples.
+
+Matter fork
++++++++++++
+
+The Matter fork in the |NCS| (``sdk-connectedhomeip``) contains all commits from the upstream Matter repository up to, and including, ``aa566b02070252043015a90946fea0685103d7dd``.
+
+The following list summarizes the most important changes inherited from the upstream Matter:
+
+* Added the Binding cluster and Groupcast communication to the Light Switch sample.
+* Updated the nRF Connect platform by adding :file:`Kconfig.defaults`, :file:`Kconfig.mcuboot.defaults` and :file:`Kconfig.multiprotocol_rpmsg.defaults` files that contain the default configuration for all nRF Connect SDK samples.
 
 Thread
 ------
@@ -61,6 +75,8 @@ Thread
 * Removed support for the :ref:`thread_architectures_designs_cp_ncp` architecture and the related tools.
 * Memory requirements page shows requirements based on the configuration used for certification instead of minimal configuration which has been removed.
 * Updated "Configuring a radio co-processor" section on Thread Border Router page with the information about forcing Hardware Flow Control in JLink.
+
+See `Thread samples`_ for lists of changes for the Thread samples.
 
 Zigbee
 ------
@@ -86,6 +102,8 @@ Zigbee
   * Production version of :ref:`nrfxlib:zboss` from v3.11.1.0 to v3.11.2.0 and platform v5.1.2 (``v3.11.2.0+v5.1.2``).
   * Development version of :ref:`nrfxlib:zboss` from v3.11.1.177 to v3.12.1.0 and platform v5.2.0 (``v3.12.1.0+v5.2.0``).
   * :ref:`ZBOSS Network Co-processor Host <ug_zigbee_tools_ncp_host>` package to the new version v2.2.0.
+
+See `Zigbee samples`_ for lists of changes for the Zigbee samples.
 
 Applications
 ============
@@ -290,7 +308,6 @@ Matter samples
 --------------
 
 * Added release configuration for all samples.
-
 * Updated:
 
   * Simplified the :file:`prj.conf` file of each sample by using the default configuration from the :file:`Kconfig.defaults` file in Matter upstream.
@@ -354,7 +371,7 @@ Zigbee samples
 
 * Added identify handler in the :ref:`Zigbee Light Switch sample <zigbee_light_switch_sample>`.
 
-Other Samples
+Other samples
 -------------
 
 * Added:
@@ -726,16 +743,6 @@ For the list of |NCS| specific commits, including commits cherry-picked from ups
    git log --oneline manifest-rev ^45ef0d2
 
 The current |NCS| main branch is based on revision ``45ef0d2`` of Zephyr, which is located between v2.7.0 and v3.0.0 of Zephyr.
-
-Matter (Project CHIP)
-=====================
-
-The Matter fork in the |NCS| (``sdk-connectedhomeip``) contains all commits from the upstream Matter repository up to, and including, ``aa566b02070252043015a90946fea0685103d7dd``.
-
-The following list summarizes the most important changes inherited from the upstream Matter:
-
-* Added the Binding cluster and Groupcast communication to the Light Switch sample.
-* Updated the nRF Connect platform by adding :file:`Kconfig.defaults`, :file:`Kconfig.mcuboot.defaults` and :file:`Kconfig.multiprotocol_rpmsg.defaults` files that contain the default configuration for all nRF Connect SDK samples.
 
 cddl-gen/zcbor
 ==============
