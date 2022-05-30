@@ -47,6 +47,8 @@ Bluetooth mesh
 * Added :c:struct:`bt_mesh_sensor_srv` context to relevant callbacks and APIs to help resolve the associated sensor model instance.
   For details, see `Bluetooth mesh samples`_ and `Bluetooth libraries and services`_.
 
+See `Bluetooth mesh samples`_ for the list of changes for the Bluetooth mesh samples.
+
 Matter
 ------
 
@@ -55,6 +57,19 @@ Matter
   For more information about the CHIP Tool controller, read the :doc:`matter:chip_tool_guide` page in the Matter documentation.
 * Added the :ref:`matter_window_covering_sample` sample, based on the Matter upstream sample.
 
+See `Matter samples`_ for the list of changes for the Matter samples.
+
+Matter fork
++++++++++++
+
+The Matter fork in the |NCS| (``sdk-connectedhomeip``) contains all commits from the upstream Matter repository up to, and including, ``25e241ebcbf11b1f63dbe25546b1f10219866ad0``.
+
+The following list summarizes the most important changes inherited from the upstream Matter:
+
+* Added the Binding cluster and Groupcast communication to the Light Switch sample.
+* Updated the nRF Connect platform by adding :file:`Kconfig.defaults`, :file:`Kconfig.mcuboot.defaults` and :file:`Kconfig.multiprotocol_rpmsg.defaults` files that contain the default configuration for all nRF Connect SDK samples.
+* Added support for Thread Synchronized Sleepy End Devices.
+
 Thread
 ------
 
@@ -62,6 +77,11 @@ Thread
 * Removed support for the :ref:`thread_architectures_designs_cp_ncp` architecture and the related tools.
 * Memory requirements page shows requirements based on the configuration used for certification instead of minimal configuration which has been removed.
 * Updated "Configuring a radio co-processor" section on Thread Border Router page with the information about forcing Hardware Flow Control in JLink.
+* Updated nrfconnect/otbr docker.
+* Updated OpenThread pre-built libraries for Thread v1.2.
+* Removed OpenThread pre-built libraries for Thread v1.1.
+
+See `Thread samples`_ for the list of changes for the Thread samples.
 
 Zigbee
 ------
@@ -75,12 +95,12 @@ Zigbee
     This implementation must not be used in production.
     It is meant to be used only for debugging purposes.
   * Documentation page about :ref:`ug_zigbee_commissioning`.
-  * Experimental support for Zigbee Green Power Combo Basic functionality.
   * Zigbee device definition for each Zigbee sample and application.
+  * Support for nRF5340 DK (PCA10095) in :ref:`Zigbee light switch sample <zigbee_light_switch_sample>` with :ref:` Zigbee FOTA library <lib_zigbee_fota>` enabled.
 
 * Updated:
 
-  * :ref:` Zigbee shell library <lib_zigbee_shell>`.
+  * :ref:`Zigbee shell library <lib_zigbee_shell>`.
     For details, see `Libraries for Zigbee`_.
   * Return code in the ZCL callbacks from :c:macro:`RET_ERROR` to :c:macro:`RET_NOT_IMPLEMENTED` if the device does not handle the ZCL command.
   * Enabled the ZCL8 compatibility mode :c:macro:`ZB_ZCL_AUTO_MODE` inside the :c:func:`zigbee_default_signal_handler`.
@@ -88,6 +108,15 @@ Zigbee
   * Development version of :ref:`nrfxlib:zboss` from v3.11.1.177 to v3.12.1.0 and platform v5.2.0 (``v3.12.1.0+v5.2.0``).
   * :ref:`ZBOSS Network Co-processor Host <ug_zigbee_tools_ncp_host>` package to the new version v2.2.0.
   * Unused RAM sections are now enabled before entering bootloader from the Zigbee application.
+  * :ref:` Zigbee FOTA library <lib_zigbee_fota>`.
+    For details, see `Libraries for Zigbee`_.
+
+* Fixed:
+
+  * An issue where an MCU reset between the completion of the OTA image transfer and a postponed firmware upgrade would cause the upgrade to be applied immediately.
+  * An issue where NCP SoC fails to initialize when ZBOSS traces over the second UBS CDC ACM class are enabled.
+
+See `Zigbee samples`_ for the list of changes for the Zigbee samples.
 
 Applications
 ============
@@ -105,6 +134,8 @@ nRF9160: Asset Tracker v2
   * Support for the :ref:`lib_nrf_cloud_pgps` flash memory partition under certain conditions.
   * Support for :ref:`QoS` library to handle multiple in-flight messages for MQTT based cloud backends such as AWS IoT, Azure IoT Hub, and nRF Cloud.
   * Documentation for Asset tracker v2 :ref:`asset_tracker_unit_test`.
+  * Support for Lightweight Machine to Machine (LwM2M).
+  * Support for filtering updates to cloud based on LTE connection evaluation (`AT%CONEVAL`_).
 
 * Updated:
 
@@ -127,6 +158,7 @@ nRF9160: Serial LTE modem
   * Enhanced the ``#XHTTPCREQ`` AT command for better HTTP upload and download support.
   * Enhanced the ``#XSLEEP`` AT command to support data indication when idle.
   * Enhanced the MQTT client to support the reception of large PUBLISH payloads.
+  * Use the :ref:`lib_nrf_cloud` library directly instead of the Cloud API.
 
 * Fixed:
 
@@ -141,7 +173,10 @@ nRF Machine Learning (Edge Impulse)
 nRF Desktop
 -----------
 
-* Added documentation for selective HID report subscription in :ref:`nrf_desktop_usb_state` using :ref:`CONFIG_DESKTOP_USB_SELECTIVE_REPORT_SUBSCRIPTION <config_desktop_app_options>` option.
+* Added:
+
+  * Documentation about nRF21540EK shield support.
+  * Documentation for selective HID report subscription in :ref:`nrf_desktop_usb_state` using :ref:`CONFIG_DESKTOP_USB_SELECTIVE_REPORT_SUBSCRIPTION <config_desktop_app_options>` option.
 
 * Removed configurations without a bootloader.
   The B0 bootloader is enabled by default on all boards if the configuration with two image slots fits in memory.
@@ -199,6 +234,14 @@ Bluetooth samples
       Before this fix, the RX buffer might have been released twice by the main thread.
     * Added debug logs for the UART events.
 
+  * :ref:`bluetooth_central_dfu_smp` sample:
+
+    * Changed the current CBOR library from TinyCBOR to `zcbor`_.
+
+  * :ref:`nrf_rpc_entropy_nrf53` sample:
+
+    * Converted from `TinyCBOR` to `zcbor`_.
+
 Bluetooth mesh samples
 ----------------------
 
@@ -219,6 +262,7 @@ nRF9160 samples
   * :ref:`nrf_cloud_mqtt_multi_service` sample, demonstrating a simple but robust integration of location services, FOTA, sensor sampling, and more.
   * Shell functionality to HTTP Update samples.
   * :ref:`nrf_cloud_rest_cell_pos_sample` sample, demonstrating how to use the :ref:`lib_nrf_cloud_rest` library to perform cellular positioning requests.
+  * :ref:`ciphersuites` sample, demonstrating how to use TLS ciphersuites.
 
 * Updated:
 
@@ -246,6 +290,7 @@ nRF9160 samples
       * Device information is sent to nRF Cloud when connecting with MQTT using the ``cloud connect`` command.
       * New options to send acquired GNSS location to nRF Cloud for ``location`` command, either in NMEA or in PVT format.
         Both MQTT and REST transports are supported (compile-time configuration).
+      * Improved the nRF9160 DK out-of-the box experience and the process of adding the DK to nRF Cloud using MoSh and LTE Link Monitor.
 
     * Updated:
 
@@ -291,6 +336,10 @@ nRF9160 samples
 
     * Enabled the :ref:`lib_at_host` library to make it easier to update certificates.
 
+* Removed:
+
+  * Cloud client sample.
+
 Thread samples
 --------------
 
@@ -300,7 +349,7 @@ Thread samples
   * Thread Beacon payload has been removed after changes in latest Thread Specification.
   * The relevant sample documentation pages with information about support for :ref:`Trusted Firmware-M <ug_tfm>`.
   * All sample documentation with a Configuration section, and organized relevant information under that section.
-  * Mnimal configuration for CLI sample has been removed.
+  * Minimal configuration for CLI sample has been removed.
   * BLE advertising interval has been increased from 100 ms to 300 ms for CLI sample when multiprotocol is enabled.
   * CoAP Client sample with Multiprotocol Bluetooth LE extension is now compatible with Bluetooth Central UART sample.
 
@@ -396,6 +445,9 @@ Other samples
 
     * Added new configuration that builds the sample with support for remote IPC Service shell on nRF5340 application core through USB.
     * Added possibility to build with the limited nRF21540 front-end module hardware pinout.
+    * Improved the calculation of the total payload size for the radio duty cycle.
+    * Fast ramp-up is enabled for all radio modes.
+    * The duty cycle for modulated transmission is limited to 1-90%.
 
 Drivers
 =======
@@ -408,6 +460,18 @@ Libraries
 =========
 
 This section provides detailed lists of changes by :ref:`library <libraries>`.
+
+Binary libraries
+----------------
+
+* Updated:
+
+  * :ref:`liblwm2m_carrier_readme` library:
+
+    * Updated to v0.30.0.
+      See the :ref:`liblwm2m_carrier_changelog` for detailed information.
+    * Projects that use the LwM2M carrier library can not use TF-M for this release, since the LwM2M carrier library requires hard floating point.
+      For more information, see the :ref:`TF-M <ug_tfm>` documentation.
 
 Bluetooth libraries and services
 --------------------------------
@@ -439,6 +503,7 @@ Bluetooth libraries and services
   * :ref:`ble_rpc` library:
 
     * Added host callback handlers for the ``write`` and ``match`` operations of the CCC descriptor.
+    * Converted from `TinyCBOR` to `zcbor`.
 
     * Fixed:
 
@@ -448,6 +513,13 @@ Bluetooth libraries and services
   * :ref:`lib_ram_pwrdn`
 
     * Added the :c:func:`power_up_unused_ram` API.
+
+Bootloader libraries
+--------------------
+
+* :ref:`doc_bl_validation`:
+
+  *  Fixed an issue in :c:func:`bl_validate_firmware` where the reset vector validation check would not work properly.
 
 Modem libraries
 ---------------
@@ -491,6 +563,16 @@ Modem libraries
       * Removed dependency on the :ref:`lib_modem_jwt` library.
         The :ref:`lib_location` library now selects :kconfig:option:`CONFIG_NRF_CLOUD_REST_AUTOGEN_JWT` when using :kconfig:option:`CONFIG_NRF_CLOUD_REST`.
 
+    * Removed:
+
+       * Support for Skyhook.
+
+  * :ref:`lib_multicell_location` library:
+
+    * Removed:
+
+        * Support for Skyhook.
+
   * :ref:`nrf_modem_lib_readme` library:
 
     * Added:
@@ -500,6 +582,13 @@ Modem libraries
       * :kconfig:option:`CONFIG_NRF_MODEM_LIB_LOG_FW_VERSION_UUID` to enable logging for both FW version and UUID at the end of the library initialization step.
       * :kconfig:option:`CONFIG_NRF_MODEM_LIB_TRACE_THREAD_PROCESSING` to process modem traces in a thread (experimental).
 
+    * Updated:
+
+      * The modem fault handler's signature now takes a pointer as parameter to the :c:struct:`nrf_modem_fault_info` structure.
+      * The modem fault handler callback is now configurable through the :c:struct:`nrf_modem_init_params_t` structure.
+      * By default, the :c:func:`nrf_modem_fault_handler` function fault handler prints the modem fault.
+        If any other handling is required, the :kconfig:option:`NRF_MODEM_LIB_ON_FAULT` Kconfig option must be set accordingly.
+
     * Deprecated :c:func:`nrf_modem_lib_shutdown_wait` function, in favor of :c:macro:`NRF_MODEM_LIB_ON_INIT`.
 
   * :ref:`lte_lc_readme` library:
@@ -508,6 +597,10 @@ Modem libraries
 
       * :c:macro:`LTE_LC_ON_CFUN` macro for compile-time registration of callbacks on modem functional mode changes using :c:func:`lte_lc_func_mode_set`.
       * Support for simple shell commands.
+
+  * :ref:`lib_modem_attest_token` library:
+
+    * CBOR parsing is now performed with the `zcbor`_ module. TinyCBOR is deprecated.
 
 * Removed the deprecated A-GPS library.
 
@@ -557,6 +650,7 @@ Libraries for networking
       * The application can now send shadow updates earlier in the connection process.
       * nRF Cloud error message responses to location service MQTT requests are now handled.
       * The value of the :kconfig:option:`NRF_CLOUD_HOST_NAME` option is now "mqtt.nrfcloud.com".
+      * Removed support for the Cloud API.
 
     * Fixed the validation of bootloader FOTA updates.
 
@@ -565,15 +659,18 @@ Libraries for networking
     * Updated:
 
       * Renamed ``aws_iot_topic_type`` to ``aws_iot_shadow_topic_type`` and removed ``AWS_IOT_SHADOW_TOPIC_UNKNOWN``.
+      * Removed support for the Cloud API.
 
   * :ref:`lib_lwm2m_client_utils` library:
 
     * Added support for using location assistance when using Coiote LwM2M server.
     * Updated the library to store credentials and server settings permanently on bootstrap.
+    * Updated the library to let an application control the network connection state.
 
   * :ref:`lib_azure_iot_hub` library:
 
     * Added :kconfig:option:`CONFIG_AZURE_IOT_HUB_NATIVE_TLS` option to configure the socket to be native for TLS instead of offloading TLS operations to the modem.
+    * Removed support for the Cloud API.
 
  * :ref:`lib_nrf_cloud_pgps` library:
 
@@ -590,6 +687,10 @@ Libraries for networking
 
     * Fixed premature assistance suppression when the :kconfig:option:`CONFIG_NRF_CLOUD_AGPS_FILTERED` option is enabled.
       Added a 10 minute margin of error to ensure A-GPS assistance is downloaded every two hours even if the modem requests assistance a little early.
+
+* Removed:
+
+  * Cloud API library.
 
 Libraries for NFC
 -----------------
@@ -664,6 +765,19 @@ Other libraries
   * :ref:`nrf_profiler`:
 
       * Renamed Profiler to nRF Profiler.
+      * Updated versions of required python modules (pynrfjprog and matplotlib)
+
+  * :ref:`ei_wrapper`:
+
+      * Added :kconfig:option:`CONFIG_EI_WRAPPER_PROFILING` for logging time of classifier execution.
+
+  * :ref:`lib_dfu_target`:
+
+      * Fixed a NULL dereference bug, which could happen if :c:func:`settings_load` was called outside of the library.
+
+  * :ref:`lib_hw_unique_key` library:
+
+    * Fixed a bug where the random key would not be deleted from RAM after being generated and written.
 
 Common Application Framework (CAF)
 ----------------------------------
@@ -725,7 +839,21 @@ Libraries for Zigbee
 
     * Added:
 
-      * New :kconfig:option:`CONFIG_ZIGBEE_FOTA_IMAGE_DISOVERY_INTERVAL_HRS` Kconfig option to configure interval between queries for the available Zigbee FOTA images.
+      * New :kconfig:option:`CONFIG_ZIGBEE_FOTA_SERVER_DISOVERY_INTERVAL_HRS` Kconfig option to configure the interval between queries for the Zigbee FOTA server.
+      * New :kconfig:option:`CONFIG_ZIGBEE_FOTA_IMAGE_QUERY_INTERVAL_MIN` Kconfig option to configure the interval between queries for the available Zigbee FOTA images.
+      * Support for the combined application and network core updates for the nRF5340 SoC.
+
+    * Updated:
+
+      * Download logic to use the :ref:`lib_dfu_multi_image` library API and image structure.
+      * The image generation script by introducing the sub-element structure inside the Zigbee OTA image.
+        Enable :kconfig:option:`CONFIG_ZIGBEE_FOTA_GENERATE_LEGACY_IMAGE_TYPE` to generate images compatible with previous NCS releases.
+      * Default value of the :kconfig:option:`CONFIG_ZIGBEE_FOTA_IMAGE_TYPE` to 0x0141.
+      * Setting of the :kconfig:option:`CONFIG_NRF53_ENFORCE_IMAGE_VERSION_EQUALITY` for nRF5340 SoC to ensure integrity of the upgrade image.
+
+    * Removed:
+
+      * The :c:enum:`ZIGBEE_FOTA_EVT_ERASE_PENDING` and :c:enum:`ZIGBEE_FOTA_EVT_ERASE_DONE` events.
 
   * Fixed:
 
@@ -743,6 +871,8 @@ Scripts
 
 This section provides detailed lists of changes by :ref:`script <scripts>`.
 
+* Added new ``west ncs-sbom`` command that generates :ref:`Software Bill of Materials <west_sbom>`.
+
 Unity
 -----
 
@@ -757,7 +887,8 @@ The code for integrating MCUboot into |NCS| is located in the :file:`ncs/nrf/mod
 
 The following list summarizes both the main changes inherited from upstream MCUboot and the main changes applied to the |NCS| specific additions:
 
-* |no_changes_yet_note|
+* Added :kconfig:option:`CONFIG_NRF53_ENFORCE_IMAGE_VERSION_EQUALITY` to attach the dependencies between application and network core images.
+  This option links the upgrade images in such a way that either both or none is applied.
 
 Zephyr
 ======
@@ -779,17 +910,6 @@ For the list of |NCS| specific commits, including commits cherry-picked from ups
    git log --oneline manifest-rev ^53fbf40227
 
 The current |NCS| main branch is based on revision ``53fbf40227`` of Zephyr.
-
-Matter (Project CHIP)
-=====================
-
-The Matter fork in the |NCS| (``sdk-connectedhomeip``) contains all commits from the upstream Matter repository up to, and including, ``25e241ebcbf11b1f63dbe25546b1f10219866ad0``.
-
-The following list summarizes the most important changes inherited from the upstream Matter:
-
-* Added the Binding cluster and Groupcast communication to the Light Switch sample.
-* Updated the nRF Connect platform by adding :file:`Kconfig.defaults`, :file:`Kconfig.mcuboot.defaults` and :file:`Kconfig.multiprotocol_rpmsg.defaults` files that contain the default configuration for all nRF Connect SDK samples.
-* Added support for Thread Synchronized Sleepy End Devices.
 
 cddl-gen/zcbor
 ==============
@@ -827,15 +947,21 @@ Documentation
 * Added:
 
   * Documentation for :ref:`debugging of nRF5340 <debugging>` in :ref:`working with nRF5340 DK<ug_nrf5340>` user guide.
+  * Section about :ref:`ug_nrf5340_intro_xip` in :ref:`working with nRF5340 DK<ug_nrf5340>` user guide.
   * Section describing how to enable Amazon Frustration-Free Setup (FFS) support in :ref:`ug_matter_configuring_device_identification`.
   * Notes to the :ref:`bluetooth_central_dfu_smp` sample document specifying the intended use of the sample.
   * DevAcademy links to the :ref:`index` and :ref:`getting_started` pages.
   * Additional user guidance to the :ref:`ug_nrf9160_gs` and :ref:`ug_thingy91_gsg` pages and the corresponding Developing with pages.
   * A page on :ref:`software_maturity` listing the different software maturity levels for the available features.
   * A page on :ref:`ug_pinctrl`.
+  * Documentation for :ref:`ug_thingy53_gs`.
 
 * Updated:
 
+  * :ref:`ug_nrf5340` and :ref:`ug_nrf91` with information about Trusted Firmware-M replacing Secure Partition Manager as the default solution for creating a Trusted Execution Environment.
+  * All samples and applications built as a non-secure firmware image for the ``_ns`` build target to reflect that the :ref:`Trusted Firmware-M <ug_tfm>` (TF-M) is automatically included instead of Secure Partition Manager (SPM).
+  * :ref:`app_power_opt` with information on how to disable serial logging when using TF-M.
+  * Replaced reference to Secure Partition Manager with reference to Trusted Firmware-M for multi-image project builds (nRF9160 samples) in :ref:`gs_programming`.
   * :ref:`gs_updating` with information about updating |VSC| and the toolchain.
   * :ref:`ug_nrf52` and :ref:`ug_nrf5340` with information about FOTA upgrades for Matter, Thread, and Zigbee.
   * :ref:`ug_matter_architecture` with updated protocol architecture diagram.
@@ -844,10 +970,25 @@ Documentation
   * :ref:`ug_thread_communication` by moving it to a separate page instead of it being under :ref:`ug_thread_architectures`.
   * Added a note to several nRF Cloud samples using the `nRF Cloud REST API`_ indicating the need for valid and registered request signing credentials.
   * :ref:`thread_ot_memory` with definitions of variants listed on the tables.
+  * :ref:`ug_nrf_cloud` with more information about security.
+  * :ref:`software_maturity` with a table detailing the differences between supported and experimental features.
+
+* Updated:
+
+   * Working with Thingy:53 with new information, and renamed to :ref:`ug_thingy53`.
 
 * Removed:
 
   * Documentation on the Getting Started Assistant, as this tool is no longer in use.
     Linux users can install the |NCS| by using the `Installing using Visual Studio Code <Installing on Linux_>`_ instructions or by following the steps on the :ref:`gs_installing` page.
+  * Documentation on the SEGGER Embedded Studio, as this tool will no longer be supported moving forward.
+    The previous |NCS| releases still support SEGGER Embedded Studio (Nordic edition).
+    To migrate from SEGGER Embedded Studio IDE or on the command line to |VSC|, follow the instructions in the `migrating from other IDEs to VS Code <Migrating IDE_>`_ documentation.
+  * Added |VSC| instructions on the following documentation:
+
+    * :ref:`gs_modifying`
+    * :ref:`ug_thingy91`
+    * :ref:`ug_nrf5340`
+    * :ref:`bootloader`
 
 .. |no_changes_yet_note| replace:: No changes since the latest |NCS| release.

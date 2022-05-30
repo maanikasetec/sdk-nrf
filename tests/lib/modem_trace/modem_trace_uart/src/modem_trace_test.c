@@ -22,7 +22,6 @@ static nrfx_uarte_event_handler_t uarte_callback;
 static const char *start_trace_at_cmd_fmt = "AT%%XMODEMTRACE=1,%hu";
 static unsigned int exp_trace_mode;
 static int nrf_modem_at_printf_retval;
-static bool exp_trace_stop;
 
 static K_HEAP_DEFINE(trace_heap, CONFIG_NRF_MODEM_LIB_TRACE_HEAP_SIZE);
 
@@ -50,10 +49,9 @@ void tearDown(void)
 
 	p_uarte_inst_in_use = NULL;
 	uarte_callback = NULL;
-	exp_trace_stop = false;
 }
 
-static void uart_tx_done_simulate(const uint8_t * const data, size_t len)
+static void uart_tx_done_simulate(const uint8_t *const data, size_t len)
 {
 	nrfx_uarte_event_t uarte_event;
 
@@ -84,20 +82,16 @@ static void nrf_modem_at_printf_ExpectTraceModeAndReturn(unsigned int trace_mode
  */
 int nrf_modem_at_printf(const char *fmt, ...)
 {
-	if (exp_trace_stop) {
-		TEST_ASSERT_EQUAL_STRING("AT%%XMODEMTRACE=0", fmt);
-	} else {
-		va_list args;
-		unsigned int trace_mode;
+	va_list args;
+	unsigned int trace_mode;
 
-		TEST_ASSERT_EQUAL_STRING(start_trace_at_cmd_fmt, fmt);
+	TEST_ASSERT_EQUAL_STRING(start_trace_at_cmd_fmt, fmt);
 
-		va_start(args, fmt);
-		trace_mode = va_arg(args, unsigned int);
-		va_end(args);
+	va_start(args, fmt);
+	trace_mode = va_arg(args, unsigned int);
+	va_end(args);
 
-		TEST_ASSERT_EQUAL(exp_trace_mode, trace_mode);
-	}
+	TEST_ASSERT_EQUAL(exp_trace_mode, trace_mode);
 
 	return nrf_modem_at_printf_retval;
 }
@@ -108,8 +102,8 @@ int test_suiteTearDown(int num_failures)
 }
 
 static const uint8_t *trace_processed_callback_buf_expect;
-static uint32_t       trace_processed_callback_len_expect;
-static int            trace_processed_callback_retval;
+static uint32_t trace_processed_callback_len_expect;
+static int trace_processed_callback_retval;
 
 static int trace_processed_callback_stub(const uint8_t *buf, uint32_t len, int cmock_calls)
 {
@@ -248,7 +242,7 @@ void test_modem_trace_forwarding_to_uart(void)
 	k_sleep(K_MSEC(1));
 
 	uart_tx_done_simulate(&sample_trace_data[max_uart_frag_size],
-						sizeof(sample_trace_data) - max_uart_frag_size);
+			      sizeof(sample_trace_data) - max_uart_frag_size);
 
 	/* Make the test thread sleep so that the trace handler thread is allowed to run.
 	 * This should make the trace handler thread call the
@@ -391,8 +385,8 @@ void test_modem_trace_when_transport_uart_init_fails(void)
 	trace_processed_callback_ExpectAndReturn(sample_trace_data, sizeof(sample_trace_data), 0);
 
 	/* Simulate the reception of modem trace and expect no UART API to be called. */
-	TEST_ASSERT_EQUAL(-ENXIO,
-			nrf_modem_lib_trace_process(sample_trace_data, sizeof(sample_trace_data)));
+	TEST_ASSERT_EQUAL(-ENXIO, nrf_modem_lib_trace_process(sample_trace_data,
+							      sizeof(sample_trace_data)));
 }
 
 /* Test that the module drops traces and returns error when it was not initialized. */
@@ -407,8 +401,8 @@ void test_modem_trace_process_when_not_initialized(void)
 	trace_processed_callback_ExpectAndReturn(sample_trace_data, sizeof(sample_trace_data), 0);
 
 	/* Simulate the reception of modem trace and expect no UART API to be called. */
-	TEST_ASSERT_EQUAL(-ENXIO,
-			nrf_modem_lib_trace_process(sample_trace_data, sizeof(sample_trace_data)));
+	TEST_ASSERT_EQUAL(-ENXIO, nrf_modem_lib_trace_process(sample_trace_data,
+							      sizeof(sample_trace_data)));
 }
 
 /* Test that nrf_modem_lib_trace_process() forwards traces to the transport even if
@@ -426,7 +420,7 @@ void test_modem_trace_process_when_modem_trace_start_was_not_called(void)
 					     sample_trace_buffer_size, NRFX_SUCCESS);
 
 	TEST_ASSERT_EQUAL(0, nrf_modem_lib_trace_process(sample_trace_data,
-						sizeof(sample_trace_data)));
+							 sizeof(sample_trace_data)));
 
 	/* Make the test thread sleep so that the trace handler thread is allowed to run.
 	 * This should make the trace handler thread pick up the trace from its fifo and send it
@@ -452,24 +446,55 @@ void test_modem_trace_start_when_nrf_modem_at_printf_fails(void)
 	TEST_ASSERT_EQUAL(-EOPNOTSUPP, nrf_modem_lib_trace_start(NRF_MODEM_LIB_TRACE_ALL));
 }
 
-/* Test nrf_modem_lib_trace_stop when nrf_modem_at_printf returns fails. */
-void test_modem_trace_stop_when_nrf_modem_at_printf_fails(void)
-{
-	/* Make nrf_modem_at_printf return failure. */
-	exp_trace_stop = true;
-	nrf_modem_at_printf_retval = -1;
-
-	TEST_ASSERT_EQUAL(-EOPNOTSUPP, nrf_modem_lib_trace_stop());
-}
-
-/* Test nrf_modem_lib_trace_stop when nrf_modem_at_printf returns success. */
+/* Test nrf_modem_lib_trace_stop */
 void test_modem_trace_stop(void)
 {
-	/* Make nrf_modem_at_printf return failure. */
-	exp_trace_stop = true;
-	nrf_modem_at_printf_retval = 0;
+	TEST_ASSERT_EQUAL(0, nrf_modem_lib_trace_stop());
+}
+
+/* Test no more traces sent to UART after trace_stop */
+void test_modem_trace_no_traces_after_trace_stop(void)
+{
+	const uint8_t sample_trace_data[10];
+
+	modem_trace_init_with_uart_transport();
 
 	TEST_ASSERT_EQUAL(0, nrf_modem_lib_trace_stop());
+
+	/* The test will fail if traces are forwarded because __wrap_nrfx_uarte_tx
+	 * will be called more times than expected (0).
+	 */
+	trace_processed_callback_ExpectAndReturn(sample_trace_data,
+		sizeof(sample_trace_data), 0);
+	nrf_modem_lib_trace_process(sample_trace_data, sizeof(sample_trace_data));
+	k_sleep(K_MSEC(1));
+}
+
+/* Test more traces sent to UART after trace_stop then trace_start */
+void test_modem_trace_more_traces_after_trace_stop_start(void)
+{
+	const uint8_t sample_trace_data[10];
+
+	modem_trace_init_with_uart_transport();
+
+	TEST_ASSERT_EQUAL_MESSAGE(0, nrf_modem_lib_trace_stop(), "stop failed");
+
+	// Verify AT%%XMODEMTRACE command is sent
+	nrf_modem_at_printf_ExpectTraceModeAndReturn(NRF_MODEM_LIB_TRACE_ALL, 0);
+	TEST_ASSERT_EQUAL_MESSAGE(0,
+		nrf_modem_lib_trace_start(NRF_MODEM_LIB_TRACE_ALL), "start failed");
+
+	// Expect UART TX data
+	__wrap_nrfx_uarte_tx_ExpectAndReturn(p_uarte_inst_in_use, sample_trace_data,
+					     sizeof(sample_trace_data), NRFX_SUCCESS);
+	nrf_modem_lib_trace_process(sample_trace_data, sizeof(sample_trace_data));
+	k_sleep(K_MSEC(1));
+
+	// Expect TX DONE triggers callback
+	trace_processed_callback_ExpectAndReturn(sample_trace_data,
+		sizeof(sample_trace_data), 0);
+	uart_tx_done_simulate(sample_trace_data, sizeof(sample_trace_data));
+	k_sleep(K_MSEC(1));
 }
 
 void main(void)

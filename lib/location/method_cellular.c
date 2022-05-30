@@ -20,7 +20,6 @@ BUILD_ASSERT(
 	(int)LOCATION_SERVICE_ANY == (int)MULTICELL_SERVICE_ANY &&
 	(int)LOCATION_SERVICE_NRF_CLOUD == (int)MULTICELL_SERVICE_NRF_CLOUD &&
 	(int)LOCATION_SERVICE_HERE == (int)MULTICELL_SERVICE_HERE &&
-	(int)LOCATION_SERVICE_SKYHOOK == (int)MULTICELL_SERVICE_SKYHOOK &&
 	(int)LOCATION_SERVICE_POLTE == (int)MULTICELL_SERVICE_POLTE,
 	"Incompatible enums location_service and multicell_service");
 
@@ -148,10 +147,10 @@ static void method_cellular_positioning_work_fn(struct k_work *work)
 		location_result.longitude = location.longitude;
 		location_result.accuracy = location.accuracy;
 		if (running) {
+			running = false;
 			location_core_event_cb(&location_result);
 		}
 	}
-	running = false;
 }
 
 int method_cellular_location_get(const struct location_method_config *config)

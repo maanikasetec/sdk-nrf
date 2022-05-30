@@ -310,7 +310,7 @@ static void ble_chn_stats_print(bool update_channel_map)
 			LOG_ERR("Encoding error");
 			return;
 		}
-		send_uart_data(cdc_dev, str, str_len);
+		send_uart_data(cdc_dev, (uint8_t *)str, str_len);
 	}
 
 	/* Channel state information print format: */
@@ -321,7 +321,7 @@ static void ble_chn_stats_print(bool update_channel_map)
 		LOG_ERR("Encoding error");
 		return;
 	}
-	send_uart_data(cdc_dev, str, str_len);
+	send_uart_data(cdc_dev, (uint8_t *)str, str_len);
 
 	str_len = 0;
 	for (uint8_t i = 0; i < CHMAP_BLE_CHANNEL_COUNT; i++) {
@@ -345,7 +345,7 @@ static void ble_chn_stats_print(bool update_channel_map)
 		}
 
 		if (str_len >= ((sizeof(str) * 2) / 3)) {
-			send_uart_data(cdc_dev, str, str_len);
+			send_uart_data(cdc_dev, (uint8_t *)str, str_len);
 			str_len = 0;
 		}
 	}
@@ -355,7 +355,7 @@ static void ble_chn_stats_print(bool update_channel_map)
 		LOG_ERR("Encoding error");
 		return;
 	}
-	send_uart_data(cdc_dev, str, str_len);
+	send_uart_data(cdc_dev, (uint8_t *)str, str_len);
 }
 
 static void hid_pkt_stats_print(uint32_t ble_recv)
@@ -402,7 +402,7 @@ static void hid_pkt_stats_print(uint32_t ble_recv)
 		LOG_ERR("Encoding error");
 		return;
 	}
-	send_uart_data(cdc_dev, str, str_len);
+	send_uart_data(cdc_dev, (uint8_t *)str, str_len);
 }
 
 static bool on_vs_evt(struct net_buf_simple *buf)

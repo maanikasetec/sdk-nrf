@@ -27,7 +27,14 @@ target_include_directories(platform_region_defs INTERFACE ${partition_includes})
 target_compile_definitions(platform_s
   PRIVATE
   $<$<BOOL:${PLATFORM_DEFAULT_CRYPTO_KEYS}>:PLATFORM_DEFAULT_CRYPTO_KEYS>
+  FIRMWARE_INFO_MAGIC=${FIRMWARE_INFO_MAGIC}
+  EXT_API_MAGIC=${EXT_API_MAGIC}
   )
+
+if (CONFIG_BOOTLOADER_MCUBOOT)
+  # Needed to compile in the MCUBoot secondary region in flash layout.
+  target_compile_definitions(platform_region_defs INTERFACE BL2)
+endif()
 
 target_include_directories(platform_s
   PUBLIC ${partition_includes} ${board_includes}
@@ -101,6 +108,13 @@ if(TFM_PARTITION_PLATFORM)
     PUBLIC
     include
     ${NRF_DIR}/include/tfm
+    ${NRF_DIR}/include
+    )
+
+  target_compile_definitions(platform_ns
+    PUBLIC
+    FIRMWARE_INFO_MAGIC=${FIRMWARE_INFO_MAGIC}
+    EXT_API_MAGIC=${EXT_API_MAGIC}
     )
 
   target_sources(platform_ns

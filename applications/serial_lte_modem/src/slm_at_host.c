@@ -30,9 +30,8 @@ LOG_MODULE_REGISTER(slm_at_host, CONFIG_SLM_LOG_LEVEL);
 #define FATAL_STR	"FATAL ERROR\r\n"
 #define SLM_SYNC_STR	"Ready\r\n"
 
-/** The maximum allowed length of an AT command passed through the SLM
- *  The space is allocated statically. This limit is in turn limited by
- *  Modem library's NRF_MODEM_AT_MAX_CMD_SIZE */
+/** The maximum allowed length of an AT command passed through the SLM.
+ *  The space is allocated statically. */
 #define AT_MAX_CMD_LEN          4096
 
 #define UART_RX_BUF_NUM         2
@@ -747,7 +746,7 @@ static void format_final_result(char *buf)
 final_result:
 	/* insert CRLF before final result if there is information response before it */
 	if (result != buf) {
-		memmove((void *)(result + strlen(crlf_str)), (void *)result, strlen(result));
+		memmove((void *)(result + strlen(crlf_str)), (void *)result, strlen(result) + 1);
 		memcpy((void *)result, (void *)crlf_str, strlen(crlf_str));
 	}
 }

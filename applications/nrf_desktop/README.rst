@@ -798,6 +798,29 @@ By default, this period is set to 120 seconds.
     If a nRF Desktop device supports remote wakeup, the USB connected device goes to suspended state when USB is suspended.
     The device can then trigger remote wakeup of the connected host on user input.
 
+Configuration
+*************
+
+|config|
+
+Adding nRF21540 EK shield support
+=================================
+
+The nRF Desktop application can be used with the :ref:`ug_radio_fem_nrf21540_ek` shield, an RF front-end module (FEM) for the 2.4 GHz range extension.
+The shield can be used with any nRF Desktop HID application configured for a development kit that is fitted with Arduino-compatible connector (see the :guilabel:`DK` tab in `Requirements`_).
+This means that the shield support is not available for nRF Desktop's dedicated boards, such as ``nrf52840gmouse_nrf52840``, ``nrf52kbd_nrf52832``, or ``nrf52840dongle_nrf52840``.
+To build the application with the shield support, pass the ``SHIELD`` parameter to the build command.
+
+For detailed information about building the nRF Desktop application for the nRF21540 EK, see the :ref:`ug_radio_fem_nrf21540_ek_programming` section on the nRF21540 EK documentation page.
+
+.. note::
+   For the multi-core build, use the ``hci_rpmsg_`` as the *childImageName* parameter, because in the nRF Desktop application, network core runs using ``hci_rpmsg_``.
+   The command would look as follows:
+
+   .. code-block:: console
+
+      west build -b nrf5340dk_nrf5340_cpuapp -- -DSHIELD=nrf21540_ek -Dhci_rpmsg_SHIELD=nrf21540_ek
+
 Building and running
 ********************
 
@@ -823,13 +846,6 @@ Selecting a build type in |VSC|
 .. include:: /gs_modifying.rst
    :start-after: build_types_selection_vsc_start
    :end-before: build_types_selection_vsc_end
-
-Selecting a build type in SES
------------------------------
-
-.. include:: /gs_modifying.rst
-   :start-after: build_types_selection_ses_start
-   :end-before: build_types_selection_ses_end
 
 Selecting a build type from command line
 ----------------------------------------
@@ -1400,7 +1416,8 @@ The nRF Desktop devices use one of the following Link Layers:
 
       This is required by the nRF Desktop central and helps avoid scheduling conflicts with Bluetooth Link Layer.
       Such conflicts could lead to a drop in HID input report rate or a disconnection.
-      Setting the value to ``3000`` also enables the nRF Desktop central to exchange data with up to 2 standard Bluetooth LE peripherals during every connection interval (every 7.5 ms).
+      Because of this, if the nRF Desktop central supports LLPM and more than one simultaneous Bluetooth connection, it also uses 10 ms connection interval instead of 7.5 ms.
+      Setting the value of :kconfig:option:`CONFIG_BT_CTLR_SDC_MAX_CONN_EVENT_LEN_DEFAULT` to ``3000`` also enables the nRF Desktop central to exchange data with up to 3 standard Bluetooth LE peripherals during every connection interval (every 10 ms).
 
     * When :kconfig:option:`CONFIG_CAF_BLE_USE_LLPM` is disabled, the device will use only standard Bluetooth LE connection parameters with the lowest available connection interval of 7.5 ms.
 

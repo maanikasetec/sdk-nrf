@@ -7,8 +7,6 @@
 .. |plusminus| unicode:: U+000B1 .. PLUS-MINUS SIGN
    :rtrim:
 
-.. |SES| replace:: SEGGER Embedded Studio
-
 .. |config| replace:: See :ref:`configure_application` for information about how to permanently or temporarily change the configuration.
 
 .. |test_sample| replace:: After programming the sample to your development kit, complete the following steps to test it:
@@ -113,9 +111,4 @@
 
 .. |thingy53_sample_note| replace:: If you build this application for Thingy:53, it enables additional features. See :ref:`thingy53_app_guide` for details.
 
-.. |thingy53_unreleased| replace:: As of the |NCS| |release| release, Thingy:53 is an unreleased product that will be released in the near future.
-
-.. |nrf5340_octave_note| replace:: The |NCS| includes the :ref:`octave` application, a complete project that integrates the LE Audio standard with custom reference hardware based on the nRF5340 SiP.
-
-.. |tfm_gnu_version_incompatibility| replace:: Do not use GNU Arm Embedded Toolchain versions *9-2020-q2-update* and *10-2020-q4-major* due to `TF-M sample incompatibility issue`_.
-   These versions do not work correctly when compiling binaries for Cortex-M Secure Extensions.
+.. |nrf5340_audio_note| replace:: The |NCS| includes the :ref:`nrf53_audio_app` application, a complete project that integrates the LE Audio standard with custom reference hardware based on the nRF5340 SiP.

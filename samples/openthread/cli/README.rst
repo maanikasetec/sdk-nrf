@@ -21,6 +21,8 @@ Optionally, you can use one or more compatible development kits programmed with 
 
 You need `nRF Sniffer for 802.15.4`_ to observe messages sent from the router to the leader kit when :ref:`ot_cli_sample_testing_multiple_v12`.
 
+.. include:: /includes/tfm.txt
+
 Overview
 ********
 
@@ -87,6 +89,8 @@ The following configuration files are available:
 * :file:`overlay-rtt.conf` - Redirects logs to RTT.
   For more information about RTT please refer to :ref:`RTT logging <ug_logging>`.
 * :file:`overlay-debug.conf` - Enables debbuging the Thread sample with GDB thread awareness.
+* :file:`overlay-ci.conf` - Disables boot banner and shell prompt.
+* :file:`overlay-multiprotocol.conf` - Enables Bluetooth LE support in this sample.
 
 FEM support
 ===========
@@ -107,11 +111,6 @@ The Thread CLI sample supports UART and USB CDC ACM as serial transports.
 By default, it uses UART transport.
 To switch to USB transport, :ref:`activate the USB overlay extension <ot_cli_sample_activating_variants>`.
 
-Trusted Firmware-M support
-==========================
-
-.. include:: /includes/tfm.txt
-
 Building and running
 ********************
 
@@ -119,7 +118,7 @@ Building and running
 
 |enable_thread_before_testing|
 
-.. include:: /includes/build_and_run.txt
+.. include:: /includes/build_and_run_ns.txt
 
 To update the OpenThread libraries provided by ``nrfxlib``, invoke ``west build -b nrf52840dk_nrf52840 -t install_openthread_libraries``.
 

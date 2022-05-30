@@ -50,7 +50,7 @@ manifest:
     # https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/zephyr/guides/modules.html
     - name: zephyr
       repo-path: sdk-zephyr
-      revision: 04acceb93debb30437757802d189357bab5152f2
+      revision: 3c8a7f7ad6d2458a3bcc30a22ef62323db87ed56
       import:
         # In addition to the zephyr repository itself, NCS also
         # imports the contents of zephyr/west.yml at the above
@@ -100,20 +100,20 @@ manifest:
     # changes.
     - name: mcuboot
       repo-path: sdk-mcuboot
-      revision: e7db8251d5fa2588870382319bc3858314870227
+      revision: v1.9.99-ncs1-rc2
       path: bootloader/mcuboot
     - name: mbedtls-nrf
       path: mbedtls
       repo-path: sdk-mbedtls
-      revision: v3.0.0-ncs1
+      revision: v3.0.0-ncs2-rc1
     - name: nrfxlib
       repo-path: sdk-nrfxlib
       path: nrfxlib
-      revision: 34e0e1a2fc14c8455f9890c4da5efdbc04e5105a
+      revision: 9927d515e1cf62bc399c36cb1620c15dc34e869f
     - name: trusted-firmware-m
       repo-path: sdk-trusted-firmware-m
       path: modules/tee/tf-m/trusted-firmware-m
-      revision: 7a9a37abf68e9745f9d5a08185cc13f2b4dc6528
+      revision: v1.5.0-ncs2-rc2
     - name: tfm-mcuboot # This is used by the trusted-firmware-m module.
       repo-path: sdk-mcuboot
       path: modules/tee/tfm-mcuboot
@@ -121,7 +121,7 @@ manifest:
     - name: matter
       repo-path: sdk-connectedhomeip
       path: modules/lib/matter
-      revision: bb41f5ce06d0f9ea8296084e904445476e1b285e
+      revision: v2.0.0-rc2
       submodules:
         - name: nlio
           path: third_party/nlio/repo
@@ -132,7 +132,7 @@ manifest:
     - name: nrf-802154
       repo-path: sdk-nrf-802154
       path: nrf-802154
-      revision: 2a829fdff789ed92ebf4e9c7bb51fac262841909
+      revision: v2.0.0-rc1
       groups:
       - nrf-802154
     - name: cjson
@@ -141,12 +141,12 @@ manifest:
       revision: c6af068b7f05207b28d68880740e4b9ec1e4b50a
     - name: homekit
       repo-path: sdk-homekit
-      revision: 19984a8248dbe7edd2898a7f6d1f601e637a8981
+      revision: f7ca2290c05ed0ba54e4d6616aa25c459607ebc3
       groups:
       - homekit
     - name: find-my
       repo-path: sdk-find-my
-      revision: 89d683417e4328b49c32503cff0de715f6b1baf2
+      revision: v2.0.0-rc2
       groups:
       - find-my
     - name: sdk-lc3
@@ -182,6 +182,5 @@ manifest:
   self:
     # This repository should be cloned to ncs/nrf.
     path: nrf
-    # This line configures west extensions which are currently only
-    # for internal use by NCS maintainers.
+    # This line configures west extensions.
     west-commands: scripts/west-commands.yml

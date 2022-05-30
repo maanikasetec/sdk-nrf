@@ -826,20 +826,20 @@ In addition to documentation related to the changes listed above, the following 
   * Added a section describing the Git tool.
   * Expanded the existing section about the west tool.
 
-* :ref:`gs_installing` - Added a note in the :ref:`gs_installing_toolchain` section about TF-M sample incompatibility issue related to GNU Arm Embedded Toolchain versions *9-2020-q2-update* and *10-2020-q4-major*.
+* :ref:`gs_installing` - Added a note in the Install the GNU Arm Embedded Toolchain section about TF-M sample incompatibility issue related to GNU Arm Embedded Toolchain versions *9-2020-q2-update* and *10-2020-q4-major*.
   This was listed earlier as a known issue.
 * :ref:`gs_programming`:
 
   * Updated the page with a note about Windows path length limitations.
     This was listed earlier as a known issue.
-  * Updated the :ref:`gs_programming_ses` section with a warning about a "no input files" error.
+  * Updated the Building with SEGGER Embedded Studio section with a warning about a "no input files" error.
 
-* :ref:`gs_updating` - Added a section about :ref:`gs_updating_ses_packages`.
+* :ref:`gs_updating` - Added a section about updating SEGGER Embedded Studio packages.
 * :ref:`glossary` - Added new terms related to :ref:`ug_matter` and :ref:`ug_zigbee`.
 * :ref:`ug_nrf52` - Added a section describing Bluetooth mesh under the Supported protocols section.
 * :ref:`ug_nrf5340`:
 
   * Added a note about varying folder names of the network core child image when programming with nrfjprog.
-  * Updated the :ref:`ug_nrf5340_ses_multi_image` to better match the programming procedure.
+  * Updated the multi-image build section of :ref:`ug_nrf5340` to better match the programming procedure.
   * Updated the :ref:`logging_cpunet` section with information about different virtual COM ports for the nRF5340 DK v1.0.0 and v2.0.0.
   * Added a section for Bluetooth mesh and its samples for application core under the section Protocols and use cases.

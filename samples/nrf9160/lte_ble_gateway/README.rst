@@ -21,7 +21,7 @@ The sample supports the following development kit:
 
 The sample also requires a `Nordic Thingy:52`_.
 
-.. include:: /includes/spm.txt
+.. include:: /includes/tfm.txt
 
 Overview
 *********
@@ -34,6 +34,10 @@ When the connection is established, it starts collecting data from two sensors:
 
 The sample aggregates the data from both sensors in memory.
 You can then trigger an alarm that sends the aggregated data over LTE to `nRF Cloud`_ by flipping the Thingy:52, which causes a change in the flip state to ``UPSIDE_DOWN``.
+
+This sample is also supported on the Thingy:91.
+However, it must be programmed using a debugger and a 10-pin SWD cable.
+Serial communication and firmware updates over serial using MCUboot are not supported in this configuration.
 
 Configuration
 *************
@@ -60,7 +64,7 @@ Building and running
 
 .. |sample path| replace:: :file:`samples/nrf9160/lte_ble_gateway`
 
-.. include:: /includes/build_and_run_nrf9160.txt
+.. include:: /includes/build_and_run_ns.txt
 
 
 Programming the sample
@@ -101,7 +105,7 @@ After programming the main controller with the sample, test it by performing the
    Follow the instructions to set up your account and to add an LTE device.
    A pattern of switch and button actions is displayed on the webpage.
 #. Power on or reset the kit.
-#. Observe in the terminal window connected to the first serial port that the kit starts up in the Secure Partition Manager.
+#. Observe in the terminal window connected to the first serial port that the kit starts up in Trusted Firmware-M.
    This is indicated by an output similar to the following lines:
 
    .. code-block:: console

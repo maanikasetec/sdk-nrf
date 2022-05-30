@@ -4,15 +4,17 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+#include <platform/nrfconnect/OTAImageProcessorImpl.h>
+
 #pragma once
 
-namespace chip
-{
-namespace DeviceLayer
-{
-	class OTAImageProcessorImpl;
-} /* namespace DeviceLayer */
-} /* namespace chip */
+/**
+ * Get FlashHandler static instance.
+ *
+ * Returned object can be used to control the QSPI external flash,
+ * which can be introduced into sleep mode and woken up on demand.
+ */
+chip::DeviceLayer::FlashHandler &GetFlashHandler();
 
 /**
  * Select recommended OTA image processor implementation.

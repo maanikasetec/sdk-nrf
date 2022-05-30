@@ -25,7 +25,7 @@ The application supports the following development kits:
 
 .. table-from-sample-yaml::
 
-.. include:: /includes/spm.txt
+.. include:: /includes/tfm.txt
 
 Configuration
 *************
@@ -307,7 +307,7 @@ Building and running
 
 .. |sample path| replace:: :file:`applications/serial_lte_modem`
 
-.. include:: /includes/build_and_run_nrf9160.txt
+.. include:: /includes/build_and_run_ns.txt
 
 .. _slm_connecting_9160dk:
 
@@ -473,7 +473,6 @@ This application uses the following |NCS| libraries:
 * :ref:`sms_readme`
 * :ref:`lib_fota_download`
 * :ref:`lib_download_client`
-* :ref:`cloud_api_readme`
 * :ref:`lib_nrf_cloud`
 * :ref:`lib_nrf_cloud_agps`
 * :ref:`lib_nrf_cloud_pgps`

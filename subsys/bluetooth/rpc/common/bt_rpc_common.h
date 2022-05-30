@@ -21,6 +21,8 @@
 #include <nrf_rpc_cbor.h>
 #include <cbkproxy.h>
 
+#define BT_RPC_SIZE_OF_FIELD(structure, field) (sizeof(((structure *)NULL)->field))
+
 /** @brief Client commands IDs used in bluetooth API serialization.
  *         Those commands are sent from the client to the host.
  */
@@ -28,11 +30,15 @@ enum bt_rpc_cmd_from_cli_to_host {
 	/* bluetooth.h API */
 	BT_RPC_GET_CHECK_LIST_RPC_CMD,
 	BT_ENABLE_RPC_CMD,
+	BT_DISABLE_RPC_CMD,
+	BT_IS_READY_RPC_CMD,
 	BT_LE_ADV_START_RPC_CMD,
 	BT_LE_ADV_STOP_RPC_CMD,
 	BT_LE_SCAN_START_RPC_CMD,
 	BT_SET_NAME_RPC_CMD,
 	BT_GET_NAME_OUT_RPC_CMD,
+	BT_GET_APPEARANCE_RPC_CMD,
+	BT_SET_APPEARANCE_RPC_CMD,
 	BT_SET_ID_ADDR_RPC_CMD,
 	BT_ID_GET_RPC_CMD,
 	BT_ID_CREATE_RPC_CMD,
@@ -264,18 +270,19 @@ size_t bt_rpc_calc_check_list_size(void);
 
 /** @brief Encode Bluetooth connection object.
  *
- * @param[in, out] encoder Cbor Encoder instance.
+ * @param[in, out] encoder CBOR encoder context.
  * @param[in] conn Connection object to encode.
  */
-void bt_rpc_encode_bt_conn(CborEncoder *encoder, const struct bt_conn *conn);
+void bt_rpc_encode_bt_conn(struct nrf_rpc_cbor_ctx *ctx,
+			   const struct bt_conn *conn);
 
 /** @brief Decode Bluetooth connection object.
  *
- * @param[in] value Cbor Value to decode.
+ * @param[in, out] ctx CBOR decoder context.
  *
  * @retval Connection object.
  */
-struct bt_conn *bt_rpc_decode_bt_conn(CborValue *value);
+struct bt_conn *bt_rpc_decode_bt_conn(struct nrf_rpc_cbor_ctx *ctx);
 
 /** @brief Declaration of callback proxy encoder for bt_gatt_complete_func_t.
  */

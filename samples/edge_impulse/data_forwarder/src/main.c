@@ -28,7 +28,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt,
 		    void *user_data)
 {
 	if (evt->type == UART_TX_DONE) {
-		atomic_cas(&uart_busy, true, false);
+		(void)atomic_set(&uart_busy, false);
 	}
 }
 
@@ -81,7 +81,7 @@ static int provide_sensor_data(void)
 		return -EBUSY;
 	}
 
-	int res = snprintf(buf, sizeof(buf), "%.2f,%.2f,%.2f\r\n",
+	int res = snprintf((char *)buf, sizeof(buf), "%.2f,%.2f,%.2f\r\n",
 			   sensor_value_to_double(&data[0]),
 			   sensor_value_to_double(&data[1]),
 			   sensor_value_to_double(&data[2]));

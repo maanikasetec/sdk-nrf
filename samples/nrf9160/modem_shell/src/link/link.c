@@ -251,15 +251,10 @@ void link_init(void)
 		(void)link_setdnsaddr(link_sett_dnsaddr_ip_get());
 	}
 
-/* With CONFIG_LWM2M_CARRIER, MoSH auto connect must be disabled
- * because LwM2M carrier lib handles that.
- */
-#if !defined(CONFIG_LWM2M_CARRIER)
 	if (link_sett_is_normal_mode_autoconn_enabled() == true) {
 		link_func_mode_set(LTE_LC_FUNC_MODE_NORMAL,
 				   link_sett_is_normal_mode_autoconn_rel14_used());
 	}
-#endif
 }
 
 void link_ind_handler(const struct lte_lc_evt *const evt)
@@ -638,14 +633,7 @@ int link_func_mode_set(enum lte_lc_func_mode fun, bool rel14_used)
 			}
 		}
 
-		if (IS_ENABLED(CONFIG_LTE_AUTO_INIT_AND_CONNECT)) {
-			return_value = lte_lc_normal();
-		} else {
-			/* TODO: why not just do lte_lc_normal() as notifications are
-			 * subscribed there also nowadays?
-			 */
-			return_value = lte_lc_init_and_connect_async(link_ind_handler);
-		}
+		return_value = lte_lc_normal();
 		break;
 	case LTE_LC_FUNC_MODE_DEACTIVATE_LTE:
 	case LTE_LC_FUNC_MODE_ACTIVATE_LTE:
